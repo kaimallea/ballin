@@ -26,11 +26,11 @@ var ball = {
 
 // Singleton representing the target
 var target =  {
+    radius: ball.radius * 1.5,
     position: { 
-        x: Math.floor(Math.random() * width - ball.radius * 2),
-        y: Math.floor(Math.random() * height - ball.radius * 2)
-    },
-    radius: ball.radius * 1.5
+        x: Math.floor(Math.random() * (width - (ball.radius * 3)) ),
+        y: Math.floor(Math.random() * (height - (ball.radius * 3)) )
+    }
 };
 
 
@@ -282,6 +282,17 @@ var loop = function () {
         ball.velocity.x *= ball.restitution;
         ball.position.x = ball.radius;
     }
+    
+    // Handle target collisions
+    if ( ball.position.x >= target.position.x
+         && 
+         ball.position.x <= target.position.x + ball.radius
+         &&
+         ball.position.y >= target.position.y
+         &&
+         ball.position.y <= target.position.y + ball.radius ) {
+             alert("Victory!");
+         }
 	
 	// Handle collisions for all platforms drawn
 	for (i = 0; i < maxplatforms; i += 1) {
