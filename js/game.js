@@ -126,7 +126,7 @@ var start = function () {
     // Reset ball position
     ball = {
         position: { x: width/2, y: 200 },
-        velocity: { x: 40, y: 0},
+        velocity: { x: 30, y: 0},
         mass: 0.2, // kg
         radius: 15, // 1px = 1cm
         restitution: -1.2
@@ -172,12 +172,15 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 	}
 };
 
+var tarX = target.position.x;
+var tarY = target.position.y;
+var tarR = target.radius;
 
 var drawTarget = function () {
     var fillStyle = ctx.fillStyle;
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, target.radius, 0, Math.PI*2, true);
-    ctx.fillStyle = '#888';
+    ctx.fillStyle = 'gray';
     ctx.fill();
     ctx.closePath();
     ctx.fillStyle = fillStyle;
@@ -185,9 +188,53 @@ var drawTarget = function () {
     // Draw center of target
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, ball.radius/2, 0, Math.PI*2, true);
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = 'red';
     ctx.fill();
     ctx.closePath();
+	
+
+}
+
+var drawBasket = function () {
+    var fillStyle = ctx.fillStyle;
+ 
+	// Draw basket around target	
+	platforms.push(
+			//right side
+            { 
+                moveTo: {
+                    x: tarX + tarR + 10,
+                    y: tarY -  tarR
+                },
+                lineTo: {
+                    x: tarX + tarR + 2,
+                    y: tarY + tarR + 2 
+                }
+            },
+			//left side
+			{ 
+                moveTo: {
+                    x: tarX - tarR - 10,
+                    y: tarY -  tarR
+                },
+                lineTo: {
+                    x: tarX - tarR - 2,
+                    y: tarY + tarR + 2
+                }
+            },
+			//bottom
+			{ 
+                moveTo: {
+                    x: tarX - tarR - 2,
+                    y: tarY +  tarR + 3
+                },
+                lineTo: {
+                    x: tarX + tarR + 2,
+                    y: tarY + tarR + 2
+                }
+            }
+        );
+
 }
 
 // Below function modified version of similar function in 
@@ -207,6 +254,7 @@ var testCircleCollision = function () {
  */
 var drawloop = function () {
     drawTarget();
+	drawBasket();
     
     if (mouse.isDown) {
         // Clear canvas
