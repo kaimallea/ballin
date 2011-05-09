@@ -7,6 +7,7 @@ var frameDelay = frameRate * 300;
 var paddleAngle = Math.PI/16;
 var loopTimer = false;
 var drawLoopTimer = false;
+var sprite = window.Sprite('player');
 
 // An array of objects that represent
 // lines drawn
@@ -174,7 +175,6 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 	}
 };
 
-
 var drawTarget = function () {
     var fillStyle = ctx.fillStyle;
     // ctx.beginPath();
@@ -184,9 +184,7 @@ var drawTarget = function () {
     // ctx.closePath();
     // ctx.fillStyle = fillStyle;
     
-	window.Sprite('player', function (player) { 
-		player.draw($('#canvas')[0].getContext('2d'), target.position.x - target.radius*1.3, target.position.y - target.radius*1.3)  
-	});
+	sprite.draw(ctx, target.position.x - target.radius*1.3, target.position.y - target.radius*1.3);
 	
     // Draw center of target
     ctx.beginPath();
