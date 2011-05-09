@@ -23,6 +23,17 @@ var ball = {
     restitution: -1.2
 };
 
+
+// Singleton representing the target
+var target =  {
+    position: { 
+        x: Math.floor(Math.random() * width - ball.radius * 2),
+        y: Math.floor(Math.random() * height - ball.radius * 2)
+    },
+    radius: ball.radius * 1.5
+};
+
+
 var Cd  = 0.47; // (Coefficient of drag), Dimensionless
 var rho = 1.22; // Density of air, kg / m^3
 var A = Math.PI * ball.radius * ball.radius / (10000);
@@ -162,14 +173,36 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 };
 
 
+var drawTarget = function () {
+    var fillStyle = ctx.fillStyle;
+    ctx.beginPath();
+    ctx.arc(target.position.x, target.position.y, target.radius, 0, Math.PI*2, true);
+    ctx.fillStyle = '#888';
+    ctx.fill();
+    ctx.closePath();
+    ctx.fillStyle = fillStyle;
+    
+    // Draw center of target
+    ctx.beginPath();
+    ctx.arc(target.position.x, target.position.y, ball.radius/2, 0, Math.PI*2, true);
+    ctx.fillStyle = '#000';
+    ctx.fill();
+    ctx.closePath();
+}
+
+
 /**
  * Initial loop to capture platform drawing
  *
  */
 var drawloop = function () {
+    drawTarget();
+    
     if (mouse.isDown) {
         // Clear canvas
         ctx.clearRect(0, 0, width, height);
+           
+        drawTarget();
         
         // Draw all existing platforms stored in 'platforms' array
         for (var i = 0; i < maxplatforms; i += 1) {
@@ -288,6 +321,8 @@ var loop = function () {
 	   
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
+    
+    drawTarget();
     
     // Draw all platforms 
     for (var i = 0; i < maxplatforms; i += 1) {
