@@ -137,6 +137,7 @@ var start = function () {
 
     // Start game loop
     loopTimer = setInterval(loop, frameDelay);
+	
 }
 
 
@@ -234,6 +235,13 @@ var drawBasket = function () {
                 }
             }
         );
+	for (var i = 0; i < 3; i += 1) {
+            ctx.beginPath();
+            ctx.moveTo(platforms[i].moveTo.x, platforms[i].moveTo.y);
+            ctx.lineTo(platforms[i].lineTo.x, platforms[i].lineTo.y);
+            ctx.stroke();
+            ctx.closePath();   
+        }
 
 }
 
@@ -255,7 +263,8 @@ var testCircleCollision = function () {
 var drawloop = function () {
     drawTarget();
 	drawBasket();
-    
+    // Draw all existing platforms stored in 'platforms' array
+        
     if (mouse.isDown) {
         // Clear canvas
         ctx.clearRect(0, 0, width, height);
