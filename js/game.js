@@ -177,13 +177,17 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 
 var drawTarget = function () {
     var fillStyle = ctx.fillStyle;
-    ctx.beginPath();
-    ctx.arc(target.position.x, target.position.y, target.radius, 0, Math.PI*2, true);
-    ctx.fillStyle = '#888';
-    ctx.fill();
-    ctx.closePath();
-    ctx.fillStyle = fillStyle;
+    // ctx.beginPath();
+    // ctx.arc(target.position.x, target.position.y, target.radius, 0, Math.PI*2, true);
+    // ctx.fillStyle = '#888';
+    // ctx.fill();
+    // ctx.closePath();
+    // ctx.fillStyle = fillStyle;
     
+	window.Sprite('player', function (player) { 
+		player.draw($('#canvas')[0].getContext('2d'), target.position.x - target.radius*1.3, target.position.y - target.radius*1.3)  
+	});
+	
     // Draw center of target
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, ball.radius/2, 0, Math.PI*2, true);
@@ -245,6 +249,10 @@ var testCircleCollision = function () {
     if (distance <= (ball.radius + target.radius) * (ball.radius + target.radius) / 2) {
         console.log('Collision');
 		stop();
+		ctx.font = "bold 30px sans-serif";
+		ctx.fillText("You are a winner. In this game, not real life.", 50, 50);
+		
+
     }
 }
 
@@ -255,11 +263,9 @@ var testCircleCollision = function () {
 var drawloop = function () {
     drawTarget();
     
-	// Draw Sprite
-	target.sprite = Sprite("player");
-	target.draw = function() {
-		this.sprite.draw(canvas, this.x, this.y);
-	};
+
+	
+	
     
 	if (mouse.isDown) {
         // Clear canvas
