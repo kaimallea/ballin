@@ -1,3 +1,4 @@
+
 var width = 700,
     height = 500;
 var canvas = ctx = false;
@@ -17,10 +18,10 @@ var maxplatforms = 0;
 // Singleton representing the ball
 var ball = {
     position: { x: width/2, y: 200 },
-    velocity: { x: 20, y: 0},
-    mass: 0.5, // kg
+    velocity: { x: 40, y: 0},
+    mass: 0.2, // kg
     radius: 15, // 1px = 1cm
-    restitution: -1.1
+    restitution: -1.2
 };
 
 
@@ -126,10 +127,10 @@ var start = function () {
     // Reset ball position
     ball = {
         position: { x: width/2, y: 200 },
-        velocity: { x: 20, y: 0},
-        mass: 0.5, // kg
+        velocity: { x: 40, y: 0},
+        mass: 0.2, // kg
         radius: 15, // 1px = 1cm
-        restitution: -1.1
+        restitution: -1.2
     };
     
     // Stop draw loop
@@ -137,7 +138,6 @@ var start = function () {
 
     // Start game loop
     loopTimer = setInterval(loop, frameDelay);
-	
 }
 
 
@@ -173,15 +173,12 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 	}
 };
 
-var tarX = target.position.x;
-var tarY = target.position.y;
-var tarR = target.radius;
 
 var drawTarget = function () {
     var fillStyle = ctx.fillStyle;
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, target.radius, 0, Math.PI*2, true);
-    ctx.fillStyle = 'gray';
+    ctx.fillStyle = '#888';
     ctx.fill();
     ctx.closePath();
     ctx.fillStyle = fillStyle;
@@ -189,61 +186,54 @@ var drawTarget = function () {
     // Draw center of target
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, ball.radius/2, 0, Math.PI*2, true);
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = '#000';
     ctx.fill();
     ctx.closePath();
-	
-
 }
 
-var drawBasket = function () {
-//    var fillStyle = ctx.fillStyle;
+var createBasket = function () {
+    var fillStyle = ctx.fillStyle;
  
 	// Draw basket around target	
 	platforms.push(
 			//right side
             { 
                 moveTo: {
-                    x: tarX + tarR + 10,
-                    y: tarY -  tarR
+                    x: target.position.x + target.radius + 10,
+                    y: target.position.y -  target.radius
                 },
                 lineTo: {
-                    x: tarX + tarR + 2,
-                    y: tarY + tarR + 2 
+                    x: target.position.x + target.radius + 2,
+                    y: target.position.y + target.radius + 2 
                 }
             },
 			//left side
 			{ 
                 moveTo: {
-                    x: tarX - tarR - 10,
-                    y: tarY -  tarR
+                    x: target.position.x - target.radius - 10,
+                    y: target.position.y -  target.radius
                 },
                 lineTo: {
-                    x: tarX - tarR - 2,
-                    y: tarY + tarR + 2
+                    x: target.position.x - target.radius - 2,
+                    y: target.position.y + target.radius + 2
                 }
             },
 			//bottom
 			{ 
                 moveTo: {
-                    x: tarX - tarR - 2,
-                    y: tarY +  tarR + 3
+                    x: target.position.x - target.radius - 2,
+                    y: target.position.y +  target.radius + 3
                 },
                 lineTo: {
-                    x: tarX + tarR + 2,
-                    y: tarY + tarR + 2
+                    x: target.position.x + target.radius + 2,
+                    y: target.position.y + target.radius + 2
                 }
             }
         );
-	for (var i = 0; i < 3; i += 1) {
-            ctx.beginPath();
-            ctx.moveTo(platforms[i].moveTo.x, platforms[i].moveTo.y);
-            ctx.lineTo(platforms[i].lineTo.x, platforms[i].lineTo.y);
-            ctx.stroke();
-            ctx.closePath();   
-        }
 
 }
+
+createBasket();
 
 // Below function modified version of similar function in 
 // "HTML5 Canvas" By Jeff Fulton, Steve Fulton, pg 201
@@ -262,10 +252,14 @@ var testCircleCollision = function () {
  */
 var drawloop = function () {
     drawTarget();
-	drawBasket();
-    // Draw all existing platforms stored in 'platforms' array
-        
-    if (mouse.isDown) {
+    
+	// Draw Sprite
+	target.sprite = Sprite("player");
+	target.draw = function() {
+		this.sprite.draw(canvas, this.x, this.y);
+	};
+    
+	if (mouse.isDown) {
         // Clear canvas
         ctx.clearRect(0, 0, width, height);
            
