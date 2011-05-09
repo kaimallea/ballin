@@ -1,3 +1,4 @@
+
 var width = 700,
     height = 500;
 var canvas = ctx = false;
@@ -190,6 +191,50 @@ var drawTarget = function () {
     ctx.closePath();
 }
 
+var createBasket = function () {
+    var fillStyle = ctx.fillStyle;
+ 
+	// Draw basket around target	
+	platforms.push(
+			//right side
+            { 
+                moveTo: {
+                    x: target.position.x + target.radius + 10,
+                    y: target.position.y -  target.radius
+                },
+                lineTo: {
+                    x: target.position.x + target.radius + 2,
+                    y: target.position.y + target.radius + 2 
+                }
+            },
+			//left side
+			{ 
+                moveTo: {
+                    x: target.position.x - target.radius - 10,
+                    y: target.position.y -  target.radius
+                },
+                lineTo: {
+                    x: target.position.x - target.radius - 2,
+                    y: target.position.y + target.radius + 2
+                }
+            },
+			//bottom
+			{ 
+                moveTo: {
+                    x: target.position.x - target.radius - 2,
+                    y: target.position.y +  target.radius + 3
+                },
+                lineTo: {
+                    x: target.position.x + target.radius + 2,
+                    y: target.position.y + target.radius + 2
+                }
+            }
+        );
+
+}
+
+createBasket();
+
 // Below function modified version of similar function in 
 // "HTML5 Canvas" By Jeff Fulton, Steve Fulton, pg 201
 var testCircleCollision = function () {
@@ -208,7 +253,13 @@ var testCircleCollision = function () {
 var drawloop = function () {
     drawTarget();
     
-    if (mouse.isDown) {
+	// Draw Sprite
+	target.sprite = Sprite("player");
+	target.draw = function() {
+		this.sprite.draw(canvas, this.x, this.y);
+	};
+    
+	if (mouse.isDown) {
         // Clear canvas
         ctx.clearRect(0, 0, width, height);
            
