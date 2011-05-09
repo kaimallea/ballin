@@ -18,10 +18,10 @@ var maxplatforms = 0;
 // Singleton representing the ball
 var ball = {
     position: { x: width/2, y: 200 },
-    velocity: { x: 40, y: 0},
-    mass: 0.2, // kg
+    velocity: { x: 20, y: 0},
+    mass: 0.9, // kg
     radius: 15, // 1px = 1cm
-    restitution: -1.2
+    restitution: -1.1
 };
 
 
@@ -127,10 +127,10 @@ var start = function () {
     // Reset ball position
     ball = {
         position: { x: width/2, y: 200 },
-        velocity: { x: 40, y: 0},
-        mass: 0.2, // kg
+        velocity: { x: 20, y: 0},
+        mass: 0.4, // kg
         radius: 15, // 1px = 1cm
-        restitution: -1.2
+        restitution: -1.1
     };
     
     // Stop draw loop
@@ -149,6 +149,7 @@ var stop = function () {
     clearInterval(loopTimer);
     ctx.clearRect(0, 0, width, height);
     platforms = [];
+	createBasket();
     drawLoopTimer = setInterval(drawloop, frameDelay);
 }
 
@@ -186,7 +187,7 @@ var drawTarget = function () {
     // Draw center of target
     ctx.beginPath();
     ctx.arc(target.position.x, target.position.y, ball.radius/2, 0, Math.PI*2, true);
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = 'red';
     ctx.fill();
     ctx.closePath();
 }
@@ -243,6 +244,7 @@ var testCircleCollision = function () {
     var distance = (dx * dx + dy * dy);
     if (distance <= (ball.radius + target.radius) * (ball.radius + target.radius) / 2) {
         console.log('Collision');
+		stop();
     }
 }
 
