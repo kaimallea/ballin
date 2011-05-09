@@ -17,10 +17,10 @@ var maxplatforms = 0;
 // Singleton representing the ball
 var ball = {
     position: { x: width/2, y: 200 },
-    velocity: { x: 40, y: 0},
-    mass: 0.2, // kg
+    velocity: { x: 20, y: 0},
+    mass: 0.5, // kg
     radius: 15, // 1px = 1cm
-    restitution: -1.2
+    restitution: -1.1
 };
 
 
@@ -126,10 +126,10 @@ var start = function () {
     // Reset ball position
     ball = {
         position: { x: width/2, y: 200 },
-        velocity: { x: 30, y: 0},
-        mass: 0.2, // kg
+        velocity: { x: 20, y: 0},
+        mass: 0.5, // kg
         radius: 15, // 1px = 1cm
-        restitution: -1.2
+        restitution: -1.1
     };
     
     // Stop draw loop
@@ -197,7 +197,7 @@ var drawTarget = function () {
 }
 
 var drawBasket = function () {
-    var fillStyle = ctx.fillStyle;
+//    var fillStyle = ctx.fillStyle;
  
 	// Draw basket around target	
 	platforms.push(
