@@ -14,7 +14,7 @@ var platforms = [];
 var maxplatforms = 0;
 
 
-// Singleton represting the ball
+// Singleton representing the ball
 var ball = {
     position: { x: width/2, y: 200 },
     velocity: { x: 40, y: 0},
@@ -48,6 +48,9 @@ var mouseDown = function (e) {
     if (e.which == 1) {    
         getMousePosition(e);
         mouse.isDown = true;
+        
+        // Store x,y coordinate for this current click
+        // so I can reference this initial click in mouseUp
         lastclick.x = mouse.x;
         lastclick.y = mouse.y; 
     }
@@ -64,7 +67,10 @@ var mouseUp = function (e) {
         
         getMousePosition(e);
         
+        // Store latest drawn platform in platforms array
         platforms.push(
+            // An object with 'moveTo' and 'lineTo' properties
+            // which are objects themselves containing x,y coordinates
             { 
                 moveTo: {
                     x: lastclick.x,
@@ -96,6 +102,7 @@ var setup = function () {
     
     maxplatforms = platforms.length;
 
+    // Start draw (platform) loop
     drawLoopTimer = setInterval(drawloop, frameDelay);
 }
 
@@ -154,11 +161,17 @@ dotLineLength = function(x, y, x0, y0, x1, y1, o){
 	}
 };
 
+
+/**
+ * Initial loop to capture platform drawing
+ *
+ */
 var drawloop = function () {
     if (mouse.isDown) {
+        // Clear canvas
         ctx.clearRect(0, 0, width, height);
         
-        // Draw all platforms 
+        // Draw all existing platforms stored in 'platforms' array
         for (var i = 0; i < maxplatforms; i += 1) {
             ctx.beginPath();
             ctx.moveTo(platforms[i].moveTo.x, platforms[i].moveTo.y);
@@ -167,14 +180,18 @@ var drawloop = function () {
             ctx.closePath();   
         }
         
+        // Display platform as its being drawn
         ctx.beginPath();
         ctx.moveTo(lastclick.x, lastclick.y);
         ctx.lineTo(mouse.x, mouse.y);
         ctx.stroke();
         ctx.closePath();
     }
+    
+    // Update platform count
     maxplatforms = platforms.length;
 }
+
 
 /**
  * Main game loop
@@ -204,28 +221,36 @@ var loop = function () {
     ball.position.x += ball.velocity.x * frameRate * 100;
     ball.position.y += ball.velocity.y * frameRate * 100;
         
-    // Handle collisions
+    /**
+     * Handle collisions
+     *
+     */
     
+    // Handle ceiling collisions
     if (ball.position.y < 0 - ball.radius) {
         ball.velocity.y *= ball.restitution;
         ball.position.y = 0 + ball.radius;
     }
     
+    // Handle floor collisions
     if (ball.position.y > height - ball.radius) {
         ball.velocity.y *= ball.restitution;
         ball.position.y = height - ball.radius;
     }
 
+    // Handle right-wall collisions
     if (ball.position.x > width - ball.radius) {
         ball.velocity.x *= ball.restitution;
         ball.position.x = width - ball.radius;
     }
     
+    // Handle left-wall collisions
     if (ball.position.x < ball.radius) {
         ball.velocity.x *= ball.restitution;
         ball.position.x = ball.radius;
     }
 	
+	// Handle collisions for all platforms drawn
 	for (i = 0; i < maxplatforms; i += 1) {
     	var paddleX1 = platforms[i].moveTo.x + Math.cos(paddleAngle);
     	var paddleY1 = platforms[i].moveTo.y + Math.sin(paddleAngle);
@@ -261,7 +286,7 @@ var loop = function () {
 	}
 
 	   
-    // Clear entire canvas context
+    // Clear canvas
     ctx.clearRect(0, 0, width, height);
     
     // Draw all platforms 
@@ -280,11 +305,11 @@ var loop = function () {
     
     // Draw ball
     ctx.beginPath();
-    //ctx.arc(ball.position.x, ball.position.y, ball.radius, 0, Math.PI*2, true);
     ctx.arc(0, 0, ball.radius, 0, Math.PI*2, true);
     ctx.fill();
     ctx.closePath();
     ctx.restore();
 }
 
+// Do setup when JS is loaded
 setup();
