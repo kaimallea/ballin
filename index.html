@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ballin'</title>
+        <style>
+            #controls {
+                width: 700px;
+                margin: 0 auto;
+            }
+            
+            #canvas {
+                display: block;
+                margin: 20px auto;
+                height: 500px;
+                width: 700px;
+                
+                border-radius: 2px;
+
+                background-image: -webkit-gradient(
+                    linear,
+                    left bottom,
+                    left top,
+                    color-stop(0.38, rgb(245,245,245)),
+                    color-stop(0.69, rgb(232,232,232))
+                );
+                background-image: -moz-linear-gradient(
+                    center bottom,
+                    rgb(245,245,245) 38%,
+                    rgb(232,232,232) 69%
+                );
+
+                box-shadow: 5px 5px 5px #888;
+            }
+        </style>
+    </head>
+    <div id="controls">
+        <button onclick="start();">Start</button>
+        <button onclick="stop();">Stop</button>
+        <p>
+            Drag and stop to create platforms then click Start to begin.
+        </p>
+    </div>
+    <body>
+        <canvas id="canvas" height="500" width="700">Get a better browser!</canvas>
+        <script src="js/game.js"></script>
+    </body>
+</html>
