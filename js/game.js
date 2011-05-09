@@ -190,6 +190,16 @@ var drawTarget = function () {
     ctx.closePath();
 }
 
+// Below function modified version of similar function in 
+// "HTML5 Canvas" By Jeff Fulton, Steve Fulton, pg 201
+var testCircleCollision = function () {
+    var dx = target.position.x - ball.position.x;
+    var dy = target.position.y - ball.position.y;
+    var distance = (dx * dx + dy * dy);
+    if (distance <= (ball.radius + target.radius) * (ball.radius + target.radius) / 2) {
+        console.log('Collision');
+    }
+}
 
 /**
  * Initial loop to capture platform drawing
@@ -284,15 +294,8 @@ var loop = function () {
     }
     
     // Handle target collisions
-    if ( ball.position.x >= target.position.x
-         && 
-         ball.position.x <= target.position.x + ball.radius
-         &&
-         ball.position.y >= target.position.y
-         &&
-         ball.position.y <= target.position.y + ball.radius ) {
-             alert("Victory!");
-         }
+    testCircleCollision();
+    
 	
 	// Handle collisions for all platforms drawn
 	for (i = 0; i < maxplatforms; i += 1) {
